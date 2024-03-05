@@ -19,7 +19,7 @@ const serverIdPage = async ({
   });
 
   if (!channel) {
-    return <div className="">There should be a "general" channel!!!</div>;
+    return <div className="">There should be a general channel!!!</div>;
   }
 
   return redirect(`/servers/${serverId}/channels/${channel.id}`);

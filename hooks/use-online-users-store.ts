@@ -4,8 +4,6 @@ type UserStatus = "ONLINE" | "IDLE" | "OFFLINE";
 
 export type OnlineUsersType = {
   userId: string;
-  socketId: string;
-  status: UserStatus;
 }[];
 
 type useOnlineUsersType = {

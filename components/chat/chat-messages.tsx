@@ -11,6 +11,7 @@ import { format } from "date-fns";
 import { Button } from "../ui/button";
 import { useChatSocket } from "@/hooks/use-chat-socket";
 import { useChatScroll } from "@/hooks/use-chat-scroll";
+import { useChatRealtime } from "@/hooks/use-chat-realtime";
 
 const DATE_FORMAT = "d MMM yyyy, HH:mm";
 
@@ -59,7 +60,14 @@ export const ChatMessages = ({
       paramValue,
     });
 
-  useChatSocket({ addKey, updateKey, queryKey });
+  //   useChatSocket({ addKey, updateKey, queryKey });
+  useChatRealtime({
+    table: type === "channel" ? "Message" : "DirectMessage",
+    filterId: chatId,
+    queryKey,
+    type,
+  });
+
   useChatScroll({
     chatRef,
     bottomRef,
@@ -85,7 +93,7 @@ export const ChatMessages = ({
       <div className="flex flex-col flex-1 justify-center items-center">
         <ServerCrash className="h-7 w-7 text-zinc-500 my-4" />
         <p className="text-sm text-zinc-500 dark:text-zinc-400">
-          Couldn't load messages...
+          Could not load messages...
         </p>
       </div>
     );

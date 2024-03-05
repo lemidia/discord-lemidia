@@ -48,11 +48,7 @@ export const ServerMember = ({ member, server }: ServerMemberProps) => {
       />
       <div
         className={`absolute w-[10px] h-[10px] rounded-full top-1.5 left-8 ring-[1.7px] ring-white ${
-          onlineUser?.status === "ONLINE"
-            ? "bg-emerald-500"
-            : onlineUser?.status === "IDLE"
-            ? "bg-orange-400"
-            : "bg-gray-500"
+          onlineUser ? "bg-emerald-500" : "bg-gray-400"
         }`}
       />
       <p

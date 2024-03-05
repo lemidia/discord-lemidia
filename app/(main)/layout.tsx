@@ -1,3 +1,4 @@
+import { ManagePresence } from "@/components/manage-presence";
 import NavigationSidebar from "@/components/navigation/navigation-sidebar";
 import { SocketOnlineCheck } from "@/components/socket-online-check";
 import { currentProfile } from "@/lib/current-profile";
@@ -14,7 +15,8 @@ const MainLayout = async ({ children }: { children: React.ReactNode }) => {
         <NavigationSidebar />
       </div>
       <main className="md:pl-[72px] h-full">{children}</main>
-      <SocketOnlineCheck id={profile.id} />
+      {/* <SocketOnlineCheck id={profile.id} /> */}
+      <ManagePresence id={profile.id} />
     </div>
   );
 };

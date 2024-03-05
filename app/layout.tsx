@@ -29,10 +29,10 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <SocketProvider>
-              <QueryProvider>{children}</QueryProvider>
-              <ModalProvider />
-            </SocketProvider>
+            {/* <SocketProvider> */}
+            <QueryProvider>{children}</QueryProvider>
+            <ModalProvider />
+            {/* </SocketProvider> */}
           </ThemeProvider>
         </body>
       </html>

@@ -59,7 +59,7 @@ export const ChatItem = ({
   socketQuery,
 }: ChatItemProps) => {
   const [isEditing, setIsEditing] = useState(false);
-  const { onOpen } = useModal();
+  const { onOpen, type } = useModal();
 
   const params = useParams();
   const router = useRouter();
@@ -239,22 +239,35 @@ export const ChatItem = ({
           {canEditMessage && (
             <ActionTooltip label="Edit">
               <Edit
-                onClick={() => setIsEditing(true)}
+                onClick={() => {
+                  setIsEditing((prev) => {
+                    if (prev === true) {
+                      form.reset({
+                        content,
+                      });
+                      return false;
+                    } else {
+                      return true;
+                    }
+                  });
+                }}
                 className="cursor-pointer ml-auto w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition"
               />
             </ActionTooltip>
           )}
-          <ActionTooltip label="Delete">
-            <Trash
-              onClick={() =>
-                onOpen("deleteMessage", {
-                  socketUrl: `${socketUrl}/${id}`,
-                  socketQuery: socketQuery,
-                })
-              }
-              className="cursor-pointer ml-auto w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition"
-            />
-          </ActionTooltip>
+          {!isEditing && (
+            <ActionTooltip label="Delete">
+              <Trash
+                onClick={() =>
+                  onOpen("deleteMessage", {
+                    socketUrl: `${socketUrl}/${id}`,
+                    socketQuery: socketQuery,
+                  })
+                }
+                className="cursor-pointer ml-auto w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition"
+              />
+            </ActionTooltip>
+          )}
         </div>
       )}
     </div>

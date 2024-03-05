@@ -119,7 +119,7 @@ export default async function handler(
     }
 
     const updatedKey = `chat:${conversationId}:messages:update`;
-    res?.socket?.server?.io.emit(updatedKey, directMessage);
+    res?.socket?.server?.io?.emit(updatedKey, directMessage);
 
     return res.status(200).json(directMessage);
   } catch (error) {
