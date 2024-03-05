@@ -7,6 +7,9 @@ import { ModalProvider } from "@/components/providers/modal-provider";
 import { SocketProvider } from "@/components/providers/socket-provider";
 import { QueryProvider } from "@/components/providers/query-provider";
 
+// for speed insights check
+import { SpeedInsights } from "@vercel/speed-insights/next";
+
 const open_Sans = Open_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -23,6 +26,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={open_Sans.className}>
+          <SpeedInsights />
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
