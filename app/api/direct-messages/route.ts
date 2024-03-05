@@ -2,6 +2,7 @@ import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
 import { DirectMessage } from "@prisma/client";
 import { NextResponse } from "next/server";
+import { z } from "zod";
 
 const MESSAGE_BATCH = 17;
 
@@ -81,6 +82,92 @@ export const GET = async (req: Request) => {
     // for debugging purposes
     console.log("Internal server error 500", error);
 
+    return new NextResponse("Internal Server Error", { status: 500 });
+  }
+};
+
+export const POST = async (req: Request) => {
+  try {
+    const profile = await currentProfile();
+
+    const { content, fileUrl } = await req.json();
+
+    const querySchema = z.object({
+      conversationId: z.string(),
+    });
+
+    const { searchParams } = new URL(req.url);
+
+    const queryParsingResult = querySchema.safeParse({
+      conversationId: searchParams.get("conversationId"),
+    });
+
+    if (!queryParsingResult.success) {
+      return new NextResponse("ConversationId is missing", {
+        status: 400,
+      });
+    }
+
+    if (!profile) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    if (!content) {
+      return new NextResponse("Content is missing", { status: 400 });
+    }
+
+    const { conversationId } = queryParsingResult.data;
+
+    const conversation = await db.conversation.findFirst({
+      where: {
+        id: conversationId,
+        OR: [
+          {
+            memberOne: {
+              profileId: profile.id,
+            },
+          },
+          {
+            memberTwo: {
+              profileId: profile.id,
+            },
+          },
+        ],
+      },
+      include: {
+        memberOne: true,
+        memberTwo: true,
+      },
+    });
+
+    if (!conversation) {
+      return new NextResponse("Conversation not found", { status: 404 });
+    }
+
+    const me =
+      conversation.memberOne.profileId === profile.id
+        ? conversation.memberOne
+        : conversation.memberTwo;
+
+    const directMessage = await db.directMessage.create({
+      data: {
+        content,
+        fileUrl: fileUrl ?? null,
+        conversationId,
+        memberId: me.id,
+      },
+      include: {
+        member: {
+          include: {
+            profile: true,
+          },
+        },
+      },
+    });
+
+    return new NextResponse("Success", { status: 201 });
+  } catch (error) {
+    console.log("Server Error at POST /api/direct-messages", error);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 };
