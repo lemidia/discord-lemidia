@@ -60,6 +60,8 @@ export const ChatMessages = ({
       paramValue,
     });
 
+  console.log(data);
+
   //   useChatSocket({ addKey, updateKey, queryKey });
   useChatRealtime({
     table: type === "channel" ? "Message" : "DirectMessage",
