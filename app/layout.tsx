@@ -6,8 +6,9 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ModalProvider } from "@/components/providers/modal-provider";
 import { QueryProvider } from "@/components/providers/query-provider";
 
-// for speed insights check
+// Vercel's check
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react";
 
 const open_Sans = Open_Sans({ subsets: ["latin"] });
 
