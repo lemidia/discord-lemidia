@@ -68,8 +68,6 @@ export const InitialModal = () => {
     }
   };
 
-  console.log("rerendered");
-
   if (!isMounted) return null;
 
   return (

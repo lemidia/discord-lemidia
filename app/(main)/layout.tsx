@@ -1,6 +1,5 @@
 import { ManagePresence } from "@/components/manage-presence";
 import NavigationSidebar from "@/components/navigation/navigation-sidebar";
-import { SocketOnlineCheck } from "@/components/socket-online-check";
 import { currentProfile } from "@/lib/current-profile";
 import { redirect } from "next/navigation";
 

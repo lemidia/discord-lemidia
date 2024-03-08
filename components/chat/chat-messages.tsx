@@ -8,8 +8,6 @@ import { ElementRef, Fragment, useEffect, useRef } from "react";
 import { ChatItem } from "./chat-item";
 
 import { format } from "date-fns";
-import { Button } from "../ui/button";
-import { useChatSocket } from "@/hooks/use-chat-socket";
 import { useChatScroll } from "@/hooks/use-chat-scroll";
 import { useChatRealtime } from "@/hooks/use-chat-realtime";
 
@@ -45,9 +43,6 @@ export const ChatMessages = ({
   type,
 }: ChatMessagesProps) => {
   const queryKey = `chat:${chatId}`;
-  // for socket event listener name
-  const addKey = `chat:${chatId}:messages`;
-  const updateKey = `chat:${chatId}:messages:update`;
 
   const chatRef = useRef<ElementRef<"div">>(null);
   const bottomRef = useRef<ElementRef<"div">>(null);
@@ -59,8 +54,6 @@ export const ChatMessages = ({
       paramKey,
       paramValue,
     });
-
-  console.log(data);
 
   //   useChatSocket({ addKey, updateKey, queryKey });
   useChatRealtime({

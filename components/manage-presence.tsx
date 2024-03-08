@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import { useSocket } from "./providers/socket-provider";
 import { useOnlineUsers } from "@/hooks/use-online-users-store";
 import { supabase } from "@/lib/supabase-client";
 
