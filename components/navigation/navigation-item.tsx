@@ -26,7 +26,7 @@ const NavigationItem = ({ id, imageUrl, name }: NavigationItemProps) => {
       <button onClick={onClick} className="group relative flex items-center">
         <div
           className={cn(
-            "absolute left-0 bg-primary rounded-r-full transition-all w-[4px]",
+            "absolute left-0 bg-zinc-400 dark:bg-zinc-500 rounded-r-full transition-all w-[4px]",
             params?.serverId === id
               ? "h-[36px]"
               : "h-[8px] group-hover:h-[20px]"

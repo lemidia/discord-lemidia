@@ -27,12 +27,12 @@ export const NavigationSidebar = async () => {
     },
   });
 
-  // if a user has no member then redirect to setup page.
-  if (!profileWithMember?.members) {
+  // If the user doesn't belong to any of the servers
+  if (!profileWithMember?.members.length) {
     redirect("/");
   }
 
-  const serversThatBelongsTo = profileWithMember?.members.map(
+  const serversThatBelongsTo = profileWithMember.members.map(
     (member) => member.server
   );
 
@@ -59,7 +59,7 @@ export const NavigationSidebar = async () => {
           afterSignOutUrl="/"
           appearance={{
             elements: {
-              avatarBox: "h-[42px] w-[42px]",
+              avatarBox: "h-[42px] w-[42px] z-[100]",
             },
           }}
         />

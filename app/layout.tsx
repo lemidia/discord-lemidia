@@ -27,6 +27,7 @@ export default function RootLayout({
       <html lang="en">
         <body className={open_Sans.className}>
           <SpeedInsights />
+          <Analytics />
           <ThemeProvider
             attribute="class"
             defaultTheme="system"

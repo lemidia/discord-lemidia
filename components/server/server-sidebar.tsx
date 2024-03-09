@@ -1,7 +1,4 @@
-import { currentProfile } from "@/lib/current-profile";
-import { db } from "@/lib/db";
-import { ChannelType, MemberRole } from "@prisma/client";
-import { redirect } from "next/navigation";
+import { ChannelType, MemberRole, Profile } from "@prisma/client";
 import { ServerHeader } from "./server-header";
 import { ScrollArea } from "../ui/scroll-area";
 import { ServerSearch } from "./server-search";
@@ -10,9 +7,11 @@ import { Separator } from "../ui/separator";
 import { ServerSection } from "./server-section";
 import { ServerChannel } from "./server-channel";
 import { ServerMember } from "./server-member";
+import { ServerWithChannelsAndMembersWithProfiles } from "@/types";
 
 type ServerSidebarProps = {
-  serverId: string;
+  profile: Profile;
+  server: ServerWithChannelsAndMembersWithProfiles;
 };
 
 const iconMap = {
@@ -29,35 +28,10 @@ const roleIconMap = {
   [MemberRole.ADMIN]: <ShieldAlert className="mr-2 h-4 w-4 text-rose-500" />,
 };
 
-export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
-  const profile = await currentProfile();
-  if (!profile) return redirect("/");
-
-  const server = await db.server.findUnique({
-    where: {
-      id: serverId,
-    },
-    include: {
-      channels: {
-        orderBy: {
-          createdAt: "asc",
-        },
-      },
-      members: {
-        include: {
-          profile: true,
-        },
-        orderBy: {
-          role: "asc",
-        },
-      },
-    },
-  });
-
-  if (!server) {
-    return redirect("/");
-  }
-
+export const ServerSidebar = async ({
+  profile,
+  server,
+}: ServerSidebarProps) => {
   const textChannels = server.channels.filter(
     (channel) => channel.type === ChannelType.TEXT
   );

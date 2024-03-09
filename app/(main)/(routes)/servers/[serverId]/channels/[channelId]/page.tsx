@@ -20,7 +20,6 @@ const ChannelIdPage = async ({
   const profile = await currentProfile();
 
   if (!profile) return redirect("/");
-
   const channel = await db.channel.findUnique({
     where: {
       id: channelId,
@@ -39,7 +38,7 @@ const ChannelIdPage = async ({
 
   return (
     <div className="bg-white dark:bg-[#313338] flex flex-col h-full">
-      {/* <ChatHeader name={channel.name} serverId={serverId} type="channel" /> */}
+      <ChatHeader name={channel.name} serverId={serverId} type="channel" />
       {channel.type === ChannelType.TEXT && (
         <>
           <ChatMessages

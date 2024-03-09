@@ -1,3 +1,4 @@
+import { MobileToggle } from "@/components/mobile-toggle";
 import { ServerSidebar } from "@/components/server/server-sidebar";
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
@@ -28,6 +29,21 @@ const ServerIdLayout = async ({
         },
       },
     },
+    include: {
+      channels: {
+        orderBy: {
+          createdAt: "asc",
+        },
+      },
+      members: {
+        include: {
+          profile: true,
+        },
+        orderBy: {
+          role: "asc",
+        },
+      },
+    },
   });
 
   // If the user is not a member of a server to enter
@@ -35,11 +51,12 @@ const ServerIdLayout = async ({
   if (!server) return redirect("/");
 
   return (
-    <div className="h-full">
+    <div className="h-full relative">
       <div className="hidden md:flex h-full w-60 z-20 flex-col inset-y-0 fixed dark:bg-zinc-800">
-        <ServerSidebar serverId={serverId} />
+        <ServerSidebar profile={profile} server={server} />
       </div>
       <main className="h-full md:pl-60">{children}</main>
+      <MobileToggle profile={profile} server={server} />
     </div>
   );
 };

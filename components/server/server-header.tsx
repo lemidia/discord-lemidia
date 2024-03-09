@@ -20,7 +20,6 @@ import {
   Users,
 } from "lucide-react";
 import { useModal } from "@/hooks/use-modal-store";
-import { useEffect } from "react";
 
 type ServerHeaderProps = {
   server: ServerWithChannelsAndMembersWithProfiles;
