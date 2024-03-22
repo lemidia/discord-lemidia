@@ -4,6 +4,7 @@ import { ChatMessages } from "@/components/chat/chat-messages";
 import { MediaRoom } from "@/components/media-room";
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
+import { auth } from "@clerk/nextjs";
 import { ChannelType } from "@prisma/client";
 import { redirect } from "next/navigation";
 
@@ -25,6 +26,8 @@ const ChannelIdPage = async ({
       id: channelId,
     },
   });
+
+  console.log(auth());
 
   // Fetching a member who is a member of the server having id as [serverId]
   const member = await db.member.findFirst({
