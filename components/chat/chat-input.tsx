@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem } from "../ui/form";
 import { Button } from "../ui/button";
-import { Plus } from "lucide-react";
+import { Loader2, Plus, Send } from "lucide-react";
 import { Input } from "../ui/input";
 import axios from "axios";
 import qs from "query-string";
@@ -51,7 +51,7 @@ export const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
 
   return (
     <Form {...form}>
-      <div className="relative p-4 pb-6">
+      <div className="relative p-4">
         <Button
           onClick={() => onOpen("messageFile", { apiUrl, query })}
           size={"icon"}
@@ -59,12 +59,15 @@ export const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
         >
           <Plus className="text-white dark:text-[#313338]" />
         </Button>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex items-center gap-x-3"
+        >
           <FormField
             control={form.control}
             name="content"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="flex-1">
                 <FormControl>
                   <div className="">
                     <Input
@@ -75,21 +78,32 @@ export const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
                       disabled={isLoading}
                       className="px-14 py-6 bg-zinc-200/90 dark:bg-zinc-700/75 border-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-zinc-600 dark:text-zinc-200"
                     />
-                    <div className="absolute top-5 right-7">
-                      <EmojiPicker
-                        onChange={(value) => {
-                          form.setValue(
-                            "content",
-                            form.getValues("content") + value
-                          );
-                        }}
-                      />
-                    </div>
                   </div>
                 </FormControl>
+                <div className="absolute top-3 right-[80px]">
+                  <EmojiPicker
+                    onChange={(value) => {
+                      form.setValue(
+                        "content",
+                        form.getValues("content") + value
+                      );
+                    }}
+                  />
+                </div>
               </FormItem>
             )}
           />
+          <Button
+            type="submit"
+            disabled={isLoading}
+            className="bg-indigo-500 text-white h-12 w-12  rounded-lg hover:bg-indigo-400"
+          >
+            {isLoading ? (
+              <Loader2 className="h-5 w-5 shrink-0 animate-spin" />
+            ) : (
+              <Send className="h-5 w-5 shrink-0" />
+            )}
+          </Button>
         </form>
       </div>
     </Form>

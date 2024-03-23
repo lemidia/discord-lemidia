@@ -28,64 +28,71 @@ export const useChatRealtime = ({
 
   useEffect(() => {
     const realtimeInsertHandler = async (payload: any) => {
-      let { data: message, error } = await supabase
-        .from(table)
-        .select(`*, member:Member(*, profile:Profile(*))`)
-        .eq("id", payload.new.id)
-        .maybeSingle();
+      try {
+        let { data: message, error } = await supabase
+          .from(table)
+          .select(`*, member:Member(*, profile:Profile(*))`)
+          .eq("id", payload.new.id)
+          .maybeSingle();
 
-      if (error) return;
+        if (error) {
+          console.log("Client errors from chat realtime handler", error);
+          return;
+        }
 
-      if (payload.eventType === "INSERT") {
-        queryClient.setQueryData([queryKey], (oldData: any) => {
-          if (!oldData || !oldData.pages || oldData.pages.length === 0) {
-            return {
-              pages: [
-                {
-                  items: [message],
-                },
-              ],
-            };
-          }
-
-          const newPages = [...oldData.pages];
-
-          newPages[0] = {
-            ...newPages[0],
-            items: [message, ...newPages[0].items],
-          };
-
-          return {
-            ...oldData,
-            pages: newPages,
-          };
-        });
-      }
-
-      if (payload.eventType === "UPDATE") {
-        queryClient.setQueryData([queryKey], (oldData: any) => {
-          if (!oldData || !oldData.pages || oldData.pages.length === 0) {
-            return oldData;
-          }
-          const newPages = oldData.pages.map(
-            (page: {
-              items: MessageWithMemberWithProfile[];
-              nextCursor: string | null | undefined;
-            }) => {
-              const items = page.items.map((item) => {
-                if (item.id === message.id) {
-                  return message;
-                } else {
-                  return item;
-                }
-              });
-
-              return { ...page, items };
+        if (payload.eventType === "INSERT") {
+          queryClient.setQueryData([queryKey], (oldData: any) => {
+            if (!oldData || !oldData.pages || oldData.pages.length === 0) {
+              return {
+                pages: [
+                  {
+                    items: [message],
+                  },
+                ],
+              };
             }
-          );
 
-          return { ...oldData, pages: newPages };
-        });
+            const newPages = [...oldData.pages];
+
+            newPages[0] = {
+              ...newPages[0],
+              items: [message, ...newPages[0].items],
+            };
+
+            return {
+              ...oldData,
+              pages: newPages,
+            };
+          });
+        }
+
+        if (payload.eventType === "UPDATE") {
+          queryClient.setQueryData([queryKey], (oldData: any) => {
+            if (!oldData || !oldData.pages || oldData.pages.length === 0) {
+              return oldData;
+            }
+            const newPages = oldData.pages.map(
+              (page: {
+                items: MessageWithMemberWithProfile[];
+                nextCursor: string | null | undefined;
+              }) => {
+                const items = page.items.map((item) => {
+                  if (item.id === message.id) {
+                    return message;
+                  } else {
+                    return item;
+                  }
+                });
+
+                return { ...page, items };
+              }
+            );
+
+            return { ...oldData, pages: newPages };
+          });
+        }
+      } catch (error) {
+        console.log("Client errors from chat realtime handler", error);
       }
     };
 

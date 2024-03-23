@@ -11,7 +11,7 @@ type ChatHeaderProps = {
 
 export const ChatHeader = ({ name, type, imageUrl }: ChatHeaderProps) => {
   return (
-    <div className="text-md font-bold pr-3 pl-12  flex items-center h-12 border-neutral-200 dark:border-neutral-800 border-b-2 md:px-3">
+    <div className="text-md font-bold pr-3 pl-12 flex items-center h-12 border-neutral-200 dark:border-neutral-800 border-b-2 md:px-3">
       {type === "channel" && (
         <Hash className="w-5 h-5 text-zinc-500 dark:text-zinc-400 mr-2" />
       )}

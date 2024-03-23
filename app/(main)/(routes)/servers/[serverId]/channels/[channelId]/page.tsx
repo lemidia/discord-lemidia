@@ -27,8 +27,6 @@ const ChannelIdPage = async ({
     },
   });
 
-  console.log(auth());
-
   // Fetching a member who is a member of the server having id as [serverId]
   const member = await db.member.findFirst({
     where: {
